@@ -1,0 +1,138 @@
+$php-menu-bg-color: #8892BF;
+$php-menu-border-color: #4F5B93;
+$php-menu-box-shadow: 0 0.25em .25em rgba(0,0,0,.1);
+
+$php-nav-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+$php-item-active-menu-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+$php-item-active-menu-text-color: #fff;
+$php-nav-brand-width: 50px;
+$php-container-width: 75%;
+$php-main-width: 1170px;
+$php-aside-widts: 25%;
+$php-layout-color: #F2F2F2;
+$php-layout-bg-color: #333;
+$php-layout-padding: 1.5rem;
+$php-layout-border-right: .25rem solid #666;
+
+@font-face {
+	font-family: "Fira";
+	src: url('https://www.php.net/fonts/Fira/woff/FiraMono-Regular.woff') format('woff');
+}
+////////////////////////////////
+@mixin php-font {
+	@font-face {
+		font-family : "Fira";
+		src: url('https://www.php.net/fonts/Fira/woff/FiraMono-Regular.woff') format('woff');
+	}
+	font-family: "Fira";
+	font-size: 1rem;
+	line-height: 1.5rem;
+	color: $php-text-color;
+}
+
+@mixin php-background($url-image) {
+	background: #333 url($url-image);
+}
+
+@mixin php-html($url-image) {
+	@include php-background($url-image);
+	@include php-font;
+}
+/////////////////////////////////////
+@mixin php-nav-button-focus{
+	box-shadow: $php-item-active-menu-box-shadow;
+	color     : $php-item-active-menu-text-color;
+}
+/////////////////////////////////////
+@mixin php-nav-button {
+	background-color: transparent;
+	color           : $php-item-active-menu-text-color;
+}
+/////////////////////////////////////
+@mixin php-nav-border {
+	border-bottom: .25rem solid $php-menu-border-color;
+}
+
+@mixin php-nav-bar {
+	@include php-nav-border;
+	box-shadow: $php-menu-box-shadow;
+	background: $php-menu-bg-color;
+}
+/////////////////////////////////////
+
+@mixin php-main-content {
+	background-color: $php-layout-color;
+	color           : $php-layout-bg-color;
+	border-right: $php-layout-border-right;
+	padding         : $php-layout-padding;
+}
+
+/////////////////////////////////////
+@mixin php-container-width {
+	width: $php-container-width;
+	max-width: $php-container-max-width;
+}
+
+@mixin init {
+	box-sizing: border-box;
+	margin    : 0em;
+	padding   : 0em;
+	list-style: none;
+	text-decoration: none;
+}
+
+/* Debut du stylesheet */
+
+
+* {
+	@include init;
+}
+
+html {
+	@include php-html('../img/php-net-bg-text.svg');
+}
+
+nav.top-nav {
+	display: flex;
+	justify-content: center;
+	@include php-nav-bar;
+
+	div.container {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	div.nav-bar {
+		display: flex;
+	}
+	
+	a.brand {
+		width: $php-nav-brand-width;
+	}
+
+	a {
+		@include php-nav-button;
+	}
+
+	a:focus{
+		@include php-nav-button-focus;
+	}
+
+	a:hover{
+		color: $php-item-active-menu-text-color;
+	}
+}
+
+div.main {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	div.container {
+		@include php-main-content;
+	}
+}
+
+div.container {
+	@include php-container-width;
+}
+

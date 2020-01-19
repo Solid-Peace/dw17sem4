@@ -1,0 +1,168 @@
+//@import 'style1.scss';
+
+$php-color: #CCC;
+
+$php-nav-bg-color: #8892BF;
+$php-nav-border-color: #4F5B93;
+$php-nav-box-shadow: 0 0.25em .25em rgba(0,0,0,.1);
+$php-nav-text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+
+$php-nav-item-active-box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.125);
+$php-nav-item-active-text-color: #fff;
+
+$php-main-width: 1170px;
+
+$php-section-color: #333;
+$php-section-bg-color: #F2F2F2;
+$php-section-padding: 1.5rem;
+$php-section-border-right: .25rem solid #666;
+$php-section-witdh: 75%;
+
+$php-aside-width: 25%;
+$php-aside-padding: 1rem;
+
+
+@mixin message {
+	height: 75vh;
+	overflow: scroll;
+}
+
+
+
+@mixin php-font {
+	@font-face {
+		font-family : "Fira";
+		src: url('https://www.php.net/fonts/Fira/woff/FiraMono-Regular.woff') format('woff');
+	}
+	font-family: "Fira";
+	font-size: 1rem;
+	line-height: 1.5rem;
+	color: $php-color;
+}
+
+@mixin php-background($url-image) {
+	background: #333 url($url-image);
+}
+
+@mixin php-html($url-image) {
+	@include php-background($url-image);
+	@include php-font;
+}
+
+@mixin php-nav-item {
+	border: 0;
+	color: $php-color;
+	text-shadow: $php-nav-text-shadow;
+	padding: 1em;
+}
+
+@mixin php-nav-item-active {
+	box-shadow: $php-nav-item-active-box-shadow;
+	color: $php-nav-item-active-text-color;
+}
+
+@mixin php-nav-item-focus {
+	background-color: $php-nav-bg-color;
+	color: $php-nav-item-active-text-color;
+}
+
+@mixin php-nav-brand {
+	width: 50px;
+
+}
+
+@mixin php-nav {
+	background-color: $php-nav-bg-color;
+	box-shadow: $php-nav-box-shadow;
+	border-bottom: .25rem solid $php-nav-border-color;
+	width: 100%;
+	
+}
+
+@mixin php-nav-container {
+	width: $php-main-width;
+	padding: 0px;
+}
+
+@mixin php-main {
+	width: $php-main-width;
+}
+
+@mixin php-section {
+	color: $php-section-color;
+	background-color: $php-section-bg-color;
+	border-right: $php-section-border-right;
+	box-shadow: $php-nav-box-shadow;
+	padding: $php-section-padding;
+	width: $php-section-witdh;
+}
+
+@mixin php-aside {
+	width: $php-aside-width;
+	padding: $php-aside-padding;
+}
+
+///////////////////////////////////////////////////////
+
+* {
+	box-sizing: border-box;
+	margin    : 0em;
+	padding   : 0em;
+	list-style: none;
+	text-decoration: none;
+}
+
+html {
+	@include php-html('../img/php-net-bg-text.svg');
+	
+	body {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		nav {
+			@include php-nav;
+			display: flex;
+			justify-content: center;
+
+			.nav-container {
+				@include php-nav-container;
+				display: flex;
+				//align-items: center;
+
+				a.brand {
+					padding: 5px;
+				}
+
+				a {
+					@include php-nav-item;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+
+				a:hover {
+					@include php-nav-item-active;
+				}
+
+				a:focus {
+					@include php-nav-item-focus;
+				}
+			}
+		}
+
+		div.main {
+			@include php-main;
+			display: flex;
+
+			section {
+				@include php-section;
+			}
+
+			aside {
+				@include php-aside;
+				@include message;
+			}
+		}
+	}
+}
