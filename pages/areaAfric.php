@@ -1,39 +1,40 @@
 <?php 
-use Aws\DynamoDb\Exception\DynamoDbException;
-use Aws\DynamoDb\Marshaler;
+	use Aws\DynamoDb\Exception\DynamoDbException;
+	use Aws\DynamoDb\Marshaler;
 ?>
-<h3>Liste des pays de l'UE</h3>
+<h3>Superficie des Pays africain de la 10ème à la 22ème postion</h3>
 
 <?php 
 
 if ($dbh::$table_init == 1 && $dbh::$table_data_loaded == 1) {
 	
+	$area_classement = [];
+
 	$a = new DynamoHandler();
 	$marshaler = new Marshaler();
 
 	$eav = $marshaler->marshalJson('
 	{		
-		":rg": "Europe"
+		":rg": "Africa"
 	}
 	');
 
 	$a->params = [
 		'TableName' => $a->tableName,
-		'ProjectionExpression' => '#rg, nom',
+		'ProjectionExpression' => '#rg, nom, area',
 		'FilterExpression' => '#rg = :rg',
 		'ExpressionAttributeNames'=> [ '#rg' => 'region' ],
 		'ExpressionAttributeValues'=> $eav
 	];
 
-	echo "Scanning for countries of Europe.\n";
-
-	try {
+		try {
 		while (true) {
 			$result = $a->dynamodb->scan($a->params);
 
 			foreach ($result['Items'] as $i) {
 				$i = $marshaler->unmarshalItem($i);
-				echo $i['nom'] . '<br>';
+				//echo $i['nom'] . " : " . $i['area'] . '<br>';
+				$area_classement[$i['nom']] = $i['area'];
 			}
 
 			if (isset($result['LastEvaluatedKey'])) {
@@ -44,10 +45,18 @@ if ($dbh::$table_init == 1 && $dbh::$table_data_loaded == 1) {
 		}
 
 	} catch (DynamoDbException $e) {
-		echo "Unable to scan:\n";
-		echo $e->getMessage() . "\n";
+		$a::$message .= "Unable to scan: <br>";
+		$a::$message .= $e->getMessage() . "\br>";
 	}
-}else{
-	echo 'La table ou ses donnée ne sont pas initialisée...';
-}
-?>
+
+	asort($area_classement);
+	$i = 0;
+	foreach ($area_classement as $key => $value) {
+			if($i >= 10 && $i <= 22) {
+				echo $i . " : " . $key ." => " . $value . "<br>";
+			}
+			$i++;
+		}
+
+	}
+ ?>

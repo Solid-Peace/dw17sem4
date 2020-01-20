@@ -9,6 +9,7 @@ class DynamoHandler
 	public $sdk;
 	public $dynamodb;
 	public $tableName;
+	public $params;
 	public static $table_init;
 	public static $table_data_loaded;
 	public static $message;
@@ -103,8 +104,7 @@ class DynamoHandler
 
     	(int) $table_count['Table']['ItemCount'] > 2 ? $table_data_loaded = true : $table_data_loaded = false;
 
-    	var_dump($table_count['Table']['ItemCount']);
-      if($table_data_loaded){$this::$message .= "hello world";}
+    	if($table_data_loaded){$this::$message .= " >> La tables est chargée en donnée et compte : ".$table_count['Table']['ItemCount']." entrées <br> <br>";}
 
     	if(!$table_data_loaded) {
     		
@@ -135,14 +135,65 @@ class DynamoHandler
     				$this::$message .= "Added pays: " . $p['name']['common'] . " " . $p['region'] . "<br>";
     				$table_data_loaded = true;
     			} catch (DynamoDbException $e) {
-						$this::$message .= "Unable to add pays:<br>";
-						$this::$message .= $e->getMessage() . "<br>";
-						$table_data_loaded = false;
+    				$this::$message .= "Unable to add pays:<br>";
+    				$this::$message .= $e->getMessage() . "<br>";
+    				$table_data_loaded = false;
     				break;
     			}		
     		}
 
     		return $table_data_loaded;
+    	}
+
+    	return $table_data_loaded;
+    }
+
+
+    public function showAllData() {
+    	$params = [
+    		'TableName' => $this->tableName
+    	];
+
+    	$marshaler = new Marshaler();
+
+    	try {
+    		while (true) {
+    			$result = $this->dynamodb->scan($params);
+
+    			foreach ($result['Items'] as $i) {
+    				$i = $marshaler->unmarshalItem($i);
+    				echo "nom => <strong>" . $i['nom']
+    				. "</strong>, region => " . $i['region']
+    				. ", languages => " .  json_encode($i['languages'])
+    				. ", area => " . $i['area']
+    				. "<br>";
+    			}
+
+    			if (isset($result['LastEvaluatedKey'])) {
+    				$params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
+    			} else {
+    				break;
+    			}
+    		}
+    	} catch (DynamoDbException $e) {
+    		echo "Unable to scan:\n";
+    		echo $e->getMessage() . "\n";
+    	}
+    }
+
+    public function deleteTable() {
+    	$params = [
+    		'TableName' => $this->tableName
+    	];
+
+    	try {
+    		$result = $this->dynamodb->deleteTable($params);
+    		$this::$message .= "Deleted table.<br>";
+    		header('Location: /dw17sem4/index.php');
+
+    	} catch (DynamoDbException $e) {
+    		$this::$message .= "Unable to delete table:<br>";
+    		$this::$message .= $e->getMessage() . "<br>";
     	}
     }
   }

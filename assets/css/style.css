@@ -59,6 +59,7 @@ html body nav .nav-container a:focus {
 }
 html body div.main {
   width: 1170px;
+  height: 60vh;
   display: flex;
 }
 html body div.main section {
@@ -68,12 +69,32 @@ html body div.main section {
   box-shadow: 0 0.25em 0.25em rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   width: 75%;
+  font-size: 0.75em;
+  overflow: scroll;
 }
 html body div.main aside {
   width: 25%;
   padding: 1rem;
-  height: 75vh;
+  font-size: 0.75em;
+  height: 60vh;
   overflow: scroll;
+}
+html body footer.show-table {
+  display: flex;
+  flex-direction: column;
+  color: #333;
+  background-color: #F2F2F2;
+  box-shadow: 0 0.25em 0.25em rgba(0, 0, 0, 0.1);
+  padding: 0.5em;
+  width: 1170px;
+  margin-top: 0.5em;
+  max-height: 30vh;
+  overflow: scroll;
+  font-size: 0.6em;
+}
+html body footer.show-table a.table-delete {
+  position: absolute;
+  align-self: end;
 }
 
 /*# sourceMappingURL=style.css.map */

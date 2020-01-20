@@ -23,7 +23,7 @@ $php-aside-padding: 1rem;
 
 
 @mixin message {
-	height: 75vh;
+	height: 60vh;
 	overflow: scroll;
 }
 
@@ -86,6 +86,7 @@ $php-aside-padding: 1rem;
 
 @mixin php-main {
 	width: $php-main-width;
+	height: 60vh;
 }
 
 @mixin php-section {
@@ -95,11 +96,14 @@ $php-aside-padding: 1rem;
 	box-shadow: $php-nav-box-shadow;
 	padding: $php-section-padding;
 	width: $php-section-witdh;
+	font-size: .75em;
+	overflow: scroll;
 }
 
 @mixin php-aside {
 	width: $php-aside-width;
 	padding: $php-aside-padding;
+	font-size: .75em;
 }
 
 ///////////////////////////////////////////////////////
@@ -162,6 +166,26 @@ html {
 			aside {
 				@include php-aside;
 				@include message;
+			}
+		}
+
+		footer.show-table {
+			display:flex;
+			flex-direction: column;
+			color: $php-section-color;
+			background-color: $php-section-bg-color;
+			box-shadow: $php-nav-box-shadow;
+			padding: .5em;
+			width: $php-main-width;
+			margin-top: .5em;
+			//flex:1; 
+			max-height: 30vh;
+			overflow: scroll;
+			font-size: .6em;
+
+			a.table-delete {
+				position: absolute;
+				align-self: end;
 			}
 		}
 	}

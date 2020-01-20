@@ -22,13 +22,7 @@ use Aws\DynamoDb\Marshaler;
 	?>
 	<div class="main">
 		<section>
-			<?php 
-			echo "La table est initialisée : "
-			. $dbh::$table_init
-			."<br>"
-			."La table est chargée en donnée : "
-			. $dbh::$table_data_loaded 
-			."<br>";
+			<?php
 			if (isset($_GET['output']) && !empty($_GET['output'])) {
 				require 'router.php';
 			}
@@ -36,6 +30,14 @@ use Aws\DynamoDb\Marshaler;
 		</section>
 		<aside><?php echo $dbh::$message; ?></aside>
 	</div>
+
+	<footer class="show-table">
+		<?php if ($dbh::$table_init == 1 && $dbh::$table_data_loaded == 1): ?>
+			<a class="table-delete" href="?output=10"><button>Recharger la Table</button></a>
+			<?php $dbh->showAllData(); ?>
+		<?php endif ?>
+
+	</footer>
 
 
 
